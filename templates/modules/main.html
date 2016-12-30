@@ -22,10 +22,10 @@
 		<table>
 		<caption>商品一覧</caption>
 		{% for x in data %}
-		<tr><td><img src={{data['url']}}>{{data['name']}}</td></tr>
+		<tr><td><img src={{x['url']}}>{{x['name']}}</td></tr>
 		{% end %}
 		</table>
-		{% end %}
+	{% end %}
 	</div>
 	<div class=box id=rightbox>
 	{% module mycart(cart) %}

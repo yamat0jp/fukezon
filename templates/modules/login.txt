@@ -1,5 +1,7 @@
 <div class=field>
-	<p><input type=text>
+<form action=/login method=post>
+	<p><input type=email>
 	<p><input type=password>
-	<p style=text-align:center><a href=/login>ログイン</a>
+	<p><input type=submit value=ログイン>
+</form>
 </div>

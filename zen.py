@@ -31,6 +31,18 @@ class LoginHandler(tornado.web.RequestHandler):
 class UserHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('user.html')
+        
+class RegistHandler(tornado.web.RequestHandler):
+    def post(self):
+        data = self.application.db.table('user')
+        info = {}
+        info['name'] = self.get_arguments('name')
+        info['birth'] = self.get_argument('birth')
+        info['email'] = self.get_argument('email')
+        info['address'] = self.get_argument('address','')
+        info['password'] = self.get_argument('password')
+        data.insert(info)
+        self.redirect(r'/main')
                
 class BoxModule(tornado.web.UIModule):
     def render(self,items):
@@ -51,7 +63,7 @@ class LoginModule(tornado.web.UIModule):
 class Application(tornado.web.Application):
     def __init__(self):
         self.db = TinyDB('static/db/db.json')
-        handlers =[(r'/main',IndexHandler),(r'/login',LoginHandler),(r'/user',UserHandler)]
+        handlers =[(r'/main',IndexHandler),(r'/login',LoginHandler),(r'/user',UserHandler),(r'/register',RegistHandler)]
         setting = {'template_path':os.path.join(os.path.dirname(__file__),'templates'),
                    'static_path':os.path.join(os.path.dirname(__file__),'static'),
                    'ui_modules':{'mybox':BoxModule,'mycart':CartModule,'mycount':CountModule,'login':LoginModule},
