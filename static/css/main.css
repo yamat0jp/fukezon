@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+
+.container {
+	display:flex;
+	flex-direction:raw
+}
+
+div.field {
+	display:list-box;
+	outline:solid 1px;
+}
+
+div.field section {
+	background-color:red
+}
+
+div.field p {
+	line-height:0.2
+}
+
+#mainbox {
+	border:solid 1px gray;
+	width:65%;
+	margin:10px
+}
+
+#mainbox table {
+	border:1;
+	withd:100%
+}
+
+#mainbox table > img {
+	display:inline
+}
+
+#mainbox img {
+	display:inline
+}
+
+#leftbox {
+	width:15%
+}
+
+#rightbox {
+	width:20%;
+}

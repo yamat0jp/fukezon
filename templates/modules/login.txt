@@ -1,0 +1,5 @@
+<div class=field>
+	<p><input type=text>
+	<p><input type=password>
+	<p style=text-align:center><a href=/login>ログイン</a>
+</div>

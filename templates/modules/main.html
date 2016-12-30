@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>メインページ</title>
+<link rel=stylesheet href={{static_url('css/main.css')}}>
+</head>
+<body>
+{% if id == '' %}
+<p>ようこそゲスト様 <a href=/user>ユーザー登録</a>
+{% else %}
+<p>ようこそ{{id}}様
+{% end %}
+<div class=container>
+	<div class=box id=leftbox>
+	{% module mybox(items) %}
+	{% module mybox(new) %}
+	</div>
+	<div class=box id=mainbox>
+	{% block contents %}
+		<p>いらっしゃいませゲスト様
+		<table>
+		<caption>商品一覧</caption>
+		{% for x in data %}
+		<tr><td><img src={{data['url']}}>{{data['name']}}</td></tr>
+		{% end %}
+		</table>
+		{% end %}
+	</div>
+	<div class=box id=rightbox>
+	{% module mycart(cart) %}
+	{% module mycount(number) %}
+	{% module login() %}
+	</div>
+</div>
+</body>
+</html>

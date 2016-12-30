@@ -1,0 +1,7 @@
+
+<div class=field>
+	<section>カテゴリ</section>
+	{% for x in items %}
+	<p>{{x}}
+	{% end %}
+</div>

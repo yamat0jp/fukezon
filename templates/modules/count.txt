@@ -1,0 +1,5 @@
+
+<div class=field>
+	<section>オンラインのお客様</section>
+	<p>{{number}}人
+</div>
