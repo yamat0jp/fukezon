@@ -8,6 +8,7 @@ import tornado.web
 import tornado.httpserver
 import tornado.ioloop
 from tinydb import *
+from collections import __main__
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -106,8 +107,9 @@ class Application(tornado.web.Application):
                    'ui_modules':{'mybox':BoxModule,'mycart':CartModule,'mycount':CountModule,'login':LoginModule},
                    'debug':True}
         tornado.web.Application.__init__(self,handlers,**setting)
-        
-        
-http_server = tornado.httpserver.HTTPServer(Application())
-http_server.listen(8000)
-tornado.ioloop.IOLoop.instance().start()
+    
+app = Application()    
+if __name__ == '__main__':
+    http_server = tornado.httpserver.HTTPServer(app)
+    http_server.listen(8000)
+    tornado.ioloop.IOLoop.instance().start()
