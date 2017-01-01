@@ -8,7 +8,6 @@ import tornado.web
 import tornado.httpserver
 import tornado.ioloop
 from tinydb import *
-from collections import __main__
 
 
 class IndexHandler(tornado.web.RequestHandler):
