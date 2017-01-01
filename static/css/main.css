@@ -18,6 +18,12 @@ div.field p {
 	line-height:0.2
 }
 
+div.field form {
+	display:flex;
+	flex-direction:column;
+	align-items:center
+}
+
 #mainbox {
 	border:solid 1px gray;
 	width:65%;
@@ -29,11 +35,7 @@ div.field p {
 	withd:100%
 }
 
-#mainbox table > img {
-	display:inline
-}
-
-#mainbox img {
+#mainbox > img {
 	display:inline
 }
 

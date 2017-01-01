@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>カートの中身</title>
+</head>
+<script type=text/javascript>
+$(function(){
+	$('button#ok).on('click',function(){
+		
+	});
+	$('button#cancel).on('click',function(){
+	
+	});
+});
+</script>
+<body>
+<p>ショッピングカート
+<table>
+{% for x in data %}
+<tr><td><img src={{x['url']}}></td><td>{{x['name']}}</td><td>{{x['count']}}</td>
+	<td>{{x['price']*x['count']}}</td><td><a href=/del?id=x['id']>削除</a></td></tr>
+{% end %}
+</table>
+<p>お支払金額（合計）{{x['price']}} +（消費税）{{x['price']*0.08}} = {{x['price']*1.08}}円
+<button id=ok>決済画面</button><button id=cancel>戻る</button>
+</body>
+</html>

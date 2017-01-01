@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div class=box>
+値段<input type=text value={{index['price']}}>商品名<input type=text value={{index['name']}}>商品重量<input type=text {{index['weight']}}>
+メーカー名<input type=text value={{index['maker']}}>カテゴリ<input type=text value={{index['category']}}><input type=checkbox>アクティブ  在庫数<input type=text {{index['stock']}}>
+</div>
+追加と削除はメンテナンスまで待ってください
+<table><caption>承認待ちレコード</caption>
+{% for x in item %}
+
+{% end %}
+</table>
+<table>
+{% for x in data %}
+
+{% end %}
+</table>
+</body>
+</html>
