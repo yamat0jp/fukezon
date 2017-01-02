@@ -1,0 +1,24 @@
+{
+  "name": "fukezon",
+  "scripts": {
+  },
+  "env": {
+    "PAPERTRAIL_API_TOKEN": {
+      "required": true
+    },
+    "TZ": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "papertrail",
+    "pointdns"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
