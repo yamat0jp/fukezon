@@ -1,7 +1,11 @@
 <div class=field>
+{% if id == 'guest' %}
 <form action=/login method=post>
-	<p><input type=email>
-	<p><input type=password>
-	<p><input type=submit value=繝ｭ繧ｰ繧､繝ｳ>
+	<p><input type=email name=email>
+	<p><input type=password name=password>
+	<p><input type=submit value=郢晢ｽｭ郢ｧ�ｽｰ郢ｧ�ｽ､郢晢ｽｳ>
 </form>
+{% else %}
+<a href=/login>logout</a>
+{% end %}
 </div>

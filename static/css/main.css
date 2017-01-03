@@ -26,6 +26,10 @@ div.field form {
 	align-items:center
 }
 
+div.input {
+	margin:10px
+}
+
 #mainbox {
 	border:solid 1px gray;
 	width:65%;

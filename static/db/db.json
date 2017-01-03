@@ -1,1 +1,1 @@
-{"user": {"1": {"password": "p", "name": ["f"], "email": "yamat0jp@yahoo.co.jp", "address": "k", "birth": "1977-11-20"}}, "_default": {}, "cart": {}, "data": {}}
+{"_default": {}, "user": {"1": {"ident": 1, "password": "", "email": "", "address": "", "name": ""}, "2": {"ident": 2, "password": "pass", "email": "kainushi@gmail", "address": "sanuki", "name": "jiro"}}, "cart": {}}

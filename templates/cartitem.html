@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <title>カートの中身</title>
 </head>
+<script type=text/javascript src=http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js></script>
 <script type=text/javascript>
 $(function(){
-	$('button#ok).on('click',function(){
+	$('button#ok').on('click',function(){
 		window.location = '/payment';
 	});
-	$('button#cancel).on('click',function(){
+	$('button#cancel').on('click',function(){
 		window.location = '/main';
 	});
 });

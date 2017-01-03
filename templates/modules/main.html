@@ -6,7 +6,7 @@
 <link rel=stylesheet href={{static_url('css/main.css')}}>
 </head>
 <body>
-{% if id == '' %}
+{% if id == 'guest' %}
 <p>ようこそゲスト様 <a href=/user>ユーザー登録</a>
 {% else %}
 <p>ようこそ{{id}}様
@@ -16,8 +16,8 @@
 	{% module mybox(items) %}
 	{% module mybox(new) %}
 		<div class=field>
-		<form action=/search>
-			<p><input type=search name=search><input type=submit value=検索>
+		<form action=/main>
+			<input type=search name=search><input type=submit value=検索>
 		</form>
 		</div>
 	</div>
@@ -35,7 +35,7 @@
 	<div class=box id=rightbox>
 	{% module mycart(cart) %}
 	{% module mycount(number) %}
-	{% module login() %}
+	{% module login(id) %}
 	</div>
 </div>
 </body>

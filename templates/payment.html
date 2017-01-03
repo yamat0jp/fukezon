@@ -3,8 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type=text/javascript src=http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js></script>
 </head>
 <body>
-
+お支払いフォーム
+{{id}}様
+お届け先住所
+<form action=/decide method=post>
+<table border=1>
+<tr><td><input type=radio name=post value=first checked>お届け先住所１</td><td><input type=radio name=post value=second>お届け先住所２</td></tr>
+<tr><td>{{address}}</td><td><input type=hidden name=address><span></span><button id=change>変更</button></td>
+</table>
+お支払い方法
+<input type=submit value=支払い><input type=button value=キャンセル onclick=>
+</form>
 </body>
 </html>
