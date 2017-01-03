@@ -15,19 +15,19 @@ class IndexHandler(tornado.web.RequestHandler):
         items = ['book','soft','drink']
         new = ['coffee','tea']
         cart = {'book':3000,'soft':15000}
-        ident = ''
-        detail = self.get_argument('detail','')
-        if detail:
-            data = self.application.db.get(where('name') == detail)
-            self.render('modules/main2.html',items=items,new=new,id=ident,number=3,data=data)
+        ident = u''
+        s = self.get_argument('search','')
+        if s:
+            data = self.application.db.all(where('name') == s)
         else:
+            detail = self.get_argument('detail','')
+            if detail:
+                data = self.application.db.get(where('name') == detail)
+                self.render('modules/main2.html',items=items,new=new,id=ident,number=3,data=data)
+                return
             data = self.application.db.all()
-            self.render('modules/main.html',items=items,new=new,cart=cart,id=ident,number=5,data=data)
-    
-class SendHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.redirect(r'/main')
-        
+        self.render('modules/main.html',items=items,new=new,cart=cart,id=ident,number=5,data=data)
+           
 class LoginHandler(tornado.web.RequestHandler):
     def post(self):
         self.redirect(r'/main')
@@ -38,7 +38,7 @@ class UserHandler(tornado.web.RequestHandler):
         
 class CartHandler(tornado.web.RequestHandler):
     def get(self):
-        items = TinyDB('static/db/cart').all()
+        items = TinyDB('static/db/cart.json').all()
         table = self.application.db
         data = []
         for x in items:
@@ -68,6 +68,14 @@ class RegistHandler(tornado.web.RequestHandler):
         data.insert(info)
         self.redirect(r'/main')
         
+class PayHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render('payment.html')
+        
+class SendHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.redirect(r'/main')
+        
 class ItemHandler(tornado.web.RequestHandler):
     def get(self):
         item = TinyDB('static/db/temp.json').all()
@@ -77,7 +85,7 @@ class ItemHandler(tornado.web.RequestHandler):
             index = table.get(where('id') == ident)
         else:
             index = {'id':0,'name':'','price':0,'weight':0,'maker':'','category':'',
-                     'stock':0,'active':True}
+                     'stock':0,'active':True,'url':'http://'}
         self.render('item.html',item=item,data=table.all(),index=index)
                
 class BoxModule(tornado.web.UIModule):
@@ -100,7 +108,7 @@ class Application(tornado.web.Application):
     def __init__(self):
         self.db = TinyDB('static/db/db.json')
         handlers =[(r'/main',IndexHandler),(r'/login',LoginHandler),(r'/user',UserHandler),(r'/register',RegistHandler),
-                   (r'/item',ItemHandler),(r'/cart',CartHandler),(r'/[a-zA-Z0-9]*',SendHandler)]
+                   (r'/item',ItemHandler),(r'/cart',CartHandler),(r'/payment',PayHandler),(r'/[a-zA-Z0-9]*',SendHandler)]
         setting = {'template_path':os.path.join(os.path.dirname(__file__),'templates'),
                    'static_path':os.path.join(os.path.dirname(__file__),'static'),
                    'ui_modules':{'mybox':BoxModule,'mycart':CartModule,'mycount':CountModule,'login':LoginModule},

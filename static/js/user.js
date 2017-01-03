@@ -3,5 +3,8 @@
  */
 
 (function(){
-	$('button#ok').on('click',submit());
+	$('button#ok').click(submit());
+	$('button#cancel').click(function(){
+		window.location = '/main'
+	});
 });

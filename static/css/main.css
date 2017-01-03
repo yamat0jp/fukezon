@@ -8,6 +8,8 @@
 div.field {
 	display:list-box;
 	outline:solid 1px;
+	padding-bottom: 0.2em;
+	margin-bottom:10px
 }
 
 div.field section {
@@ -15,7 +17,7 @@ div.field section {
 }
 
 div.field p {
-	line-height:0.2
+	line-height:5px
 }
 
 div.field form {

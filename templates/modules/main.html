@@ -15,10 +15,15 @@
 	<div class=box id=leftbox>
 	{% module mybox(items) %}
 	{% module mybox(new) %}
+		<div class=field>
+		<form action=/search>
+			<p><input type=search name=search><input type=submit value=検索>
+		</form>
+		</div>
 	</div>
 	<div class=box id=mainbox>
 	{% block contents %}
-		<p>いらっしゃいませゲスト様
+		<p>いらっしゃいませ{{id}}様
 		<table>
 		<caption>商品一覧</caption>
 		{% for x in data %}
