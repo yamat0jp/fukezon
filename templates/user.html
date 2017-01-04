@@ -12,7 +12,7 @@ span {
 </style>
 </head>
 <body>
-<form action=/register method=post>
+<form action=/user method=post>
 <table>
 <caption>ユーザー登録情報</caption>
 <tr><td>お名前<span>*</span></td><td><input type=text name=name></td></tr>
@@ -21,7 +21,7 @@ span {
 <tr><td>お客様住所</td><td><input type=text name=address></td></tr>
 <tr><td>パスワード<span>*</span></td><td><input type=password name=password></td></tr>
 <tr><td>確認<span>*</span></td><td><input type=password></td></tr>
-<tr><td align=right><input type=submit>登録</td><td><button id=cancel onclick=window.location=/main)>戻る</button></td></tr>
+<tr><td align=right><input type=submit value=登録></td><td><input type=button value=戻る onclick=window.location=/main)></td></tr>
 </table>
 </form>
 </body>

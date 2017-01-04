@@ -12,6 +12,7 @@ from tinydb import *
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
+        self.application.back = False
         items = ['book','soft','drink']
         new = ['coffee','tea']
         cart = {'book':3000,'soft':15000}
@@ -49,27 +50,6 @@ class UserHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('user.html')
         
-class CartHandler(tornado.web.RequestHandler):
-    def get(self):
-        items = self.application.db.table('cart').all()
-        table = self.application.db
-        data = []
-        for x in items:
-            temp = table.get(where('id') == x['id'])
-            for y in data:
-                if y['id'] == temp['id']:
-                    y['count'] += 1
-                else:
-                    data.append(temp)
-        self.render('cartitem.html',data=data)
-        
-class DeleteHandler(tornado.web.RequestHandler):
-    def get(self):
-        ident = self.get_argument('id','')
-        if ident:
-            self.application.db.remove(where('id') == ident)
-        
-class RegistHandler(tornado.web.RequestHandler):
     def post(self):
         info = {}
         info['name'] = self.get_argument('name')
@@ -77,11 +57,50 @@ class RegistHandler(tornado.web.RequestHandler):
         info['address'] = self.get_argument('address','')
         info['password'] = self.get_argument('password')
         table = self.application.db.table('user')
-        eid = table.insert(info)
-        table.update({'ident':eid},eids=[eid])
-        self.application.ident = table.get(eid=eid)
-        self.redirect(r'/main')
+        if table.contains(where('email') == info['email']) == False:
+            eid = table.insert(info)
+            table.update({'ident':eid},eids=[eid])
+            self.application.ident = table.get(eid=eid)
+            if self.application.back:
+                self.redirect(r'/cart')
+            else:
+                self.redirect(r'/main')
+        else:
+            self.redirect(r'/user')
+            
+class CartHandler(tornado.web.RequestHandler):
+    def get(self):
+        if self.application.ident == {}:
+            self.application.back = True
+            self.redirect(r'/user')
+            return
+        table = self.application.db.table('cart')
+        data = table.search(where('ident') == self.application.ident['ident'])
+        self.render('cartitem.html',data=data)
         
+    def post(self):
+        ident = self.get_argument('id')
+        count = self.get_argument('count')
+        table = self.application.db.table('cart')
+        user = self.application.ident
+        if user:
+            q = Query()
+            query = (q.ident == user['ident'])&(q.item_id == ident)
+            if table.contains(query):
+                el = table.get(query)
+                table.update({count:el['count']+count},eids=[el.eid])
+            else:
+                table.insert({'ident':ident,'count':count})
+        else:
+            eid = table.insert({'ident':0,'item_id':ident,'count':count})
+            self.redirect(r'/main')
+                
+class DeleteHandler(tornado.web.RequestHandler):
+    def get(self):
+        ident = self.get_argument('id','')
+        if ident:
+            self.application.db.remove(where('id') == ident)
+              
 class PayHandler(tornado.web.RequestHandler):
     def get(self):
         ident = self.application.ident
@@ -130,10 +149,11 @@ class LoginModule(tornado.web.UIModule):
         return self.render_string('modules/login.txt',id=id)
     
 class Application(tornado.web.Application):
+    back = False
     def __init__(self):
         self.ident = {}
         self.db = TinyDB('static/db/db.json')
-        handlers =[(r'/main',IndexHandler),(r'/login',LoginHandler),(r'/user',UserHandler),(r'/register',RegistHandler),
+        handlers =[(r'/main',IndexHandler),(r'/login',LoginHandler),(r'/user',UserHandler),
                    (r'/item',ItemHandler),(r'/cart',CartHandler),(r'/payment',PayHandler),(r'/decide',DecideHandler),
                    (r'/[a-zA-Z0-9]*',SendHandler)]
         setting = {'template_path':os.path.join(os.path.dirname(__file__),'templates'),

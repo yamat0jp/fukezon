@@ -24,10 +24,9 @@
 	<div class=box id=mainbox>
 	{% block contents %}
 		<p>いらっしゃいませ{{id}}様
-		<table>
 		<caption>商品一覧</caption>
 		{% for x in data %}
-		<tr><td><img src={{x['url']}}>{{x['name']}}</td></tr>
+		<div><img src={{x['url']}}>{{x['ident']}}:{{x['name']}}</div>
 		{% end %}
 		</table>
 	{% end %}
