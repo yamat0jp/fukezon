@@ -13,9 +13,6 @@ from tinydb import *
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.application.back = False
-        items = ['book','soft','drink']
-        new = ['coffee','tea']
-        cart = {'book':3000,'soft':15000}
         user = self.application.ident
         if user:
             ident = user['name']
@@ -28,11 +25,29 @@ class IndexHandler(tornado.web.RequestHandler):
             detail = self.get_argument('detail','')
             if detail:
                 data = self.application.db.contains(where('name') == detail)
-                self.render('modules/main2.html',items=items,new=new,id=ident,number=3,data=data)
+                self.render('modules/main2.html',items=self.items(),new=self.new(),cart=self.cart(),id=ident,number=3,data=data)
                 return
             data = self.application.db.all()
-        self.render('modules/main.html',items=items,new=new,cart=cart,id=ident,number=5,data=data)
-           
+        self.render('modules/main.html',items=self.items(),new=self.new(),cart=self.cart(),id=ident,number=5,data=data)
+         
+    def items(self):
+        for x in self.application.db.table('item').all():
+            yield x['category']
+            
+    def cart(self):
+        s = {}
+        table = self.application.db.table('item')
+        for x in self.application.db.table('cart').all():
+            item = table.get(where('item_id') == x['item_id'])
+            s[item['name']] = item['price']
+        return s
+    
+    def new(self):
+        table = self.application.db.table('item')
+        for x in self.application.db.table('new').all():
+            item = table.get(where('item_id') == x['item_id'])
+            yield item['name']
+              
 class LoginHandler(tornado.web.RequestHandler):
     def post(self):
         table = self.application.db.table('user')
@@ -90,13 +105,13 @@ class CartHandler(tornado.web.RequestHandler):
                 el = table.get(query)
                 table.update({count:el['count']+count},eids=[el.eid])
             else:
-                table.insert({'ident':ident,'count':count})
+                table.insert({'ident':user['ident'],'item_id':ident,'count':count})
         else:
-            eid = table.insert({'ident':0,'item_id':ident,'count':count})
-            self.redirect(r'/main')
+            table.insert({'ident':0,'item_id':ident,'count':count})
+        self.redirect(r'/main')
                 
 class DeleteHandler(tornado.web.RequestHandler):
-    def get(self):
+    def post(self):
         ident = self.get_argument('id','')
         if ident:
             self.application.db.remove(where('id') == ident)
@@ -105,8 +120,9 @@ class PayHandler(tornado.web.RequestHandler):
     def get(self):
         ident = self.application.ident
         if ident:
-            self.render('payment.html',id=ident,address='')
+            self.render('payment.html',id=ident)
         else:
+            self.application.back = True
             self.redirect(r'/user')
             
 class SendHandler(tornado.web.RequestHandler):
@@ -116,12 +132,12 @@ class SendHandler(tornado.web.RequestHandler):
 class ItemHandler(tornado.web.RequestHandler):
     def get(self):
         item = self.application.table('temp').all()
-        table = self.application.db
+        table = self.application.db.table('item')
         ident = self.get_argument('id','')
         if ident:
-            index = table.get(where('id') == ident)
+            index = table.get(where('item_id') == ident)
         else:
-            index = {'id':0,'name':'','price':0,'weight':0,'maker':'','category':'',
+            index = {'item_id':0,'name':'','price':0,'weight':0,'maker':'','category':'',
                      'stock':0,'active':True,'url':'http://'}
         self.render('item.html',item=item,data=table.all(),index=index)
                
