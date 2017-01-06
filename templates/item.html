@@ -6,18 +6,24 @@
 </head>
 <body>
 <div class=box>
-値段<input type=text value={{index['price']}}>商品名<input type=text value={{index['name']}}>商品重量<input type=text {{index['weight']}}>
-メーカー名<input type=text value={{index['maker']}}>カテゴリ<input type=text value={{index['category']}}><input type=checkbox>アクティブ  在庫数<input type=text {{index['stock']}}>
+<form action=/item method=post>
+値段<input type=text name=price value={{index['price']}}>商品名<input type=text name=name value={{index['name']}}>商品重量<input type=text name=weight value={{index['weight']}}>
+カテゴリ<input type=text name=category value={{index['category']}}><input type=checkbox name=active checked=true>アクティブ  在庫数<input type=text name=stock value={{index['stock']}}>
+<input type=submit></form>
 </div>
 追加と削除はメンテナンスまで待ってください
 <table><caption>承認待ちレコード</caption>
+<tr><td>商品名</td><td>値段</td><td>カテゴリ</td></tr>
 {% for x in item %}
-
+<tr><td>{{x['name']}}</td><td>{{x['price']}}</td><td>{{x['category']}}</td></tr>
 {% end %}
 </table>
+<p>
 <table>
+<caption>商品一覧</caption>
+<tr><td>商品名</td><td>値段</td><td>カテゴリ</td></tr>
 {% for x in data %}
-
+<tr><td>{{x['name']}}</td><td>{{x['price']}}</td><td>{{x['category']}}</td></tr>
 {% end %}
 </table>
 </body>

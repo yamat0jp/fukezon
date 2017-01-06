@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<input type=radio name=mode {{mode[0]}} onclick="location.href='/admin?mode=const'">承認待ち
+<input type=radio name=mode {{mode[1]}} onclick="location.href='/admin?mode=test'">準備中
+<input type=radio name=mode {{mode[2]}} onclick="location.href='/admin?mode=open'">公開中
+<table><caption></caption>
+{% for x in item %}
+<tr><td>{{x['name']}}</td><td>{{x['price']}}</td><td>{{x['maker']}}</td></tr>
+{% end %}
+</table>
+</body>
+</html>

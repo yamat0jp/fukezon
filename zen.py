@@ -130,17 +130,49 @@ class SendHandler(tornado.web.RequestHandler):
         self.redirect(r'/main')
         
 class ItemHandler(tornado.web.RequestHandler):
+    index = {'item_id':0,'name':'','price':0,'weight':0,'category':'',
+            'stock':0,'active':True,'url':'http://'}    
+
     def get(self):
-        item = self.application.table('temp').all()
-        table = self.application.db.table('item')
+        self.read()
         ident = self.get_argument('id','')
         if ident:
-            index = table.get(where('item_id') == ident)
+            q = (where('ident') == self.application.ident['ident'])&(where('item_id') == int(ident))
+            self.index = self.application.db.table('temp').search(q)
         else:
-            index = {'item_id':0,'name':'','price':0,'weight':0,'maker':'','category':'',
-                     'stock':0,'active':True,'url':'http://'}
-        self.render('item.html',item=item,data=table.all(),index=index)
-               
+            self.index['maker'] = self.application.ident['name']
+        self.render('item.html',item=self.item,data=self.table,index=self.index)
+          
+    def post(self):
+        self.read()
+        self.index['item_id'] = self.get_argument('id','')
+        self.index['name'] = self.get_argument('name','')
+        self.index['price'] = self.get_argument('price',0)
+        self.index['weight'] = self.get_argument('weight',0)
+        self.index['maker'] = self.application.ident['name']
+        self.item.insert(self.index)
+        self.render('item.html',item=self.item,data=self.table,index=self.index)
+        
+    def read(self):
+        q = where('ident') == self.application.ident['ident']
+        self.item = self.application.db.table('temp').search(q)
+        self.table = self.application.db.table('item').search(q)
+                     
+class AdminHandler(tornado.web.RequestHandler):
+    def get(self):
+        mode = self.get_argument('mode','const')
+        code = 'checked=check'
+        if mode == 'const':
+            item = self.application.db.table('temp').all()
+            s = [code,'','']
+        elif mode == 'open':
+            item = self.application.db.table('item').search(where('active') == True)
+            s = ['','',code]
+        else:
+            item = self.application.db.table('item').search(where('active') == False)
+            s = ['',code,'']
+        self.render('admin.html',item=item,mode=s)
+    
 class DecideHandler(tornado.web.RequestHandler):
     def post(self):
         s = self.get_argument('post')
@@ -171,7 +203,7 @@ class Application(tornado.web.Application):
         self.db = TinyDB('static/db/db.json')
         handlers =[(r'/main',IndexHandler),(r'/login',LoginHandler),(r'/user',UserHandler),
                    (r'/item',ItemHandler),(r'/cart',CartHandler),(r'/payment',PayHandler),(r'/decide',DecideHandler),
-                   (r'/[a-zA-Z0-9]*',SendHandler)]
+                   (r'/admin',AdminHandler),(r'/[a-zA-Z0-9]*',SendHandler)]
         setting = {'template_path':os.path.join(os.path.dirname(__file__),'templates'),
                    'static_path':os.path.join(os.path.dirname(__file__),'static'),
                    'ui_modules':{'mybox':BoxModule,'mycart':CartModule,'mycount':CountModule,'login':LoginModule},
