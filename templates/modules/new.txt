@@ -1,0 +1,7 @@
+
+<div class=field>
+<section>new</section>
+{% for x in items %}
+<p>{{x}}
+{% end %}
+</div>

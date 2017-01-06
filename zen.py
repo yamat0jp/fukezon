@@ -25,11 +25,15 @@ class IndexHandler(tornado.web.RequestHandler):
         else:
             detail = self.get_argument('detail','')
             if detail:
-                data = table.search(where('name') == detail)
-                self.render('modules/main2.html',items=self.items(),new=self.new(),cart=self.cart(),id=ident,number=3,data=data)
+                data = table.get(where('item_id') == detail)
+                self.render('modules/main2.html',items=set(self.items()),new=self.new(),cart=self.cart(),id=ident,number=3,data=data)
                 return
-            data = table.all()
-        self.render('modules/main.html',items=self.items(),new=self.new(),cart=self.cart(),id=ident,number=5,data=data)
+            cate = self.get_argument('category','')
+            if cate:
+                data = table.search(where('category') == cate)
+            else:
+                data = table.all()
+        self.render('modules/main.html',items=set(self.items()),new=self.new(),cart=self.cart(),id=ident,number=5,data=data)
          
     def items(self):
         for x in self.application.db.table('item').all():
@@ -147,12 +151,15 @@ class ItemHandler(tornado.web.RequestHandler):
     def post(self):
         self.read()
         self.index['ident'] = self.application.ident['ident']
-        self.index['item_id'] = self.get_argument('id','')
+        self.index['category'] = self.get_argument('category','')
         self.index['name'] = self.get_argument('name','')
         self.index['price'] = self.get_argument('price',0)
         self.index['weight'] = self.get_argument('weight',0)
         self.index['maker'] = self.application.ident['name']
-        self.application.db.table('temp').insert(self.index)
+        tb = self.application.db.table('item')
+        eid = tb.insert(self.index)
+        tb.update({'item_id':eid},eids=[eid])
+        #self.application.db.table('temp').insert(self.index)
         self.render('item.html',item=self.item,data=self.table,index=self.index)
         
     def read(self):
@@ -199,6 +206,10 @@ class DecideHandler(tornado.web.RequestHandler):
 class BoxModule(tornado.web.UIModule):
     def render(self,items):
         return self.render_string('modules/box.txt',items=items)
+
+class ListModule(tornado.web.UIModule):
+    def render(self,items):
+        return self.render_string('modules/new.txt',items=items)
     
 class CartModule(tornado.web.UIModule):
     def render(self,items):
@@ -222,7 +233,7 @@ class Application(tornado.web.Application):
                    (r'/admin',AdminHandler),(r'/[a-zA-Z0-9]*',SendHandler)]
         setting = {'template_path':os.path.join(os.path.dirname(__file__),'templates'),
                    'static_path':os.path.join(os.path.dirname(__file__),'static'),
-                   'ui_modules':{'mybox':BoxModule,'mycart':CartModule,'mycount':CountModule,'login':LoginModule},
+                   'ui_modules':{'mybox':BoxModule,'newbox':ListModule,'mycart':CartModule,'mycount':CountModule,'login':LoginModule},
                    'debug':True}
         tornado.web.Application.__init__(self,handlers,**setting)
     

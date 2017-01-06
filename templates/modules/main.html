@@ -14,7 +14,7 @@
 <div class=container>
 	<div class=box id=leftbox>
 	{% module mybox(items) %}
-	{% module mybox(new) %}
+	{% module newbox(new) %}
 		<div class=field>
 		<form action=/main>
 			<input type=search name=search><input type=submit value=検索>
@@ -26,7 +26,10 @@
 		<p>いらっしゃいませ{{id}}様
 		<caption>商品一覧</caption>
 		{% for x in data %}
-		<div class=item><img src={{x['url']}}>{{x['item_id']}}:{{x['name']}}</div>
+		<div class=item>
+			<p><img src={{x['url']}}>{{x['item_id']}}:{{x['name']}}
+			<p>price {{x['price']}}円
+		</div>
 		{% end %}
 		</table>
 	{% end %}

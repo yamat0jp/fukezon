@@ -1,7 +1,8 @@
 
 <div class=field>
-	<section>カテゴリ</section>
+	<section>category</section>
 	{% for x in items %}
-	<p>{{x}}
+	<p><a href=/main?category={{x}}>{{x}}</a>
 	{% end %}
+	<p><a href=/main>すべて</a>
 </div>

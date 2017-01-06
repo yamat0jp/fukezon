@@ -31,7 +31,12 @@ div.input {
 }
 
 div.item {
-	border:solid 1px black
+	border:solid 1px black;
+	margin:5px
+}
+
+div.item p {
+	line-height:0
 }
 
 #mainbox {
