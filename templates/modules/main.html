@@ -26,7 +26,7 @@
 		<p>いらっしゃいませ{{id}}様
 		<caption>商品一覧</caption>
 		{% for x in data %}
-		<div><img src={{x['url']}}>{{x['ident']}}:{{x['name']}}</div>
+		<div class=item><img src={{x['url']}}>{{x['item_id']}}:{{x['name']}}</div>
 		{% end %}
 		</table>
 	{% end %}

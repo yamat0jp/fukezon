@@ -30,10 +30,15 @@ div.input {
 	margin:10px
 }
 
+div.item {
+	border:solid 1px black
+}
+
 #mainbox {
 	border:solid 1px gray;
 	width:65%;
-	margin:10px
+	margin:10px;
+	column-count:3
 }
 
 #mainbox table {

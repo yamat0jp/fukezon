@@ -5,13 +5,19 @@
 <title>Insert title here</title>
 </head>
 <body>
-<input type=radio name=mode {{mode[0]}} onclick="location.href='/admin?mode=const'">承認待ち
-<input type=radio name=mode {{mode[1]}} onclick="location.href='/admin?mode=test'">準備中
-<input type=radio name=mode {{mode[2]}} onclick="location.href='/admin?mode=open'">公開中
-<table><caption></caption>
+<form action=/admin method=post>
+<input type=radio name=mode value=const {{mode[0]}} onclick="location.href='/admin?mode=const'">承認待ち
+<input type=radio name=mode value=test {{mode[1]}} onclick="location.href='/admin?mode=test'">準備中
+<input type=radio name=mode value=open {{mode[2]}} onclick="location.href='/admin?mode=open'">公開中
+<table>
 {% for x in item %}
-<tr><td>{{x['name']}}</td><td>{{x['price']}}</td><td>{{x['maker']}}</td></tr>
+<tr><td>{{x['name']}}</td><td>{{x['price']}}</td><td>{{x['maker']}}
+	{% if mode[0] != '' %}
+	</td><td><input type=hidden name=id value={{x['item_id']}}><input type=submit value=承認>
+	{% end %}
+</td></tr>
 {% end %}
 </table>
+</form>
 </body>
 </html>

@@ -14,20 +14,21 @@ class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.application.back = False
         user = self.application.ident
+        table = self.application.db.table('item')
         if user:
             ident = user['name']
         else:
             ident = 'guest'
         s = self.get_argument('search','')
         if s:
-            data = self.application.db.contains(where('name') == s)
+            data = table.search(where('name') == s)
         else:
             detail = self.get_argument('detail','')
             if detail:
-                data = self.application.db.contains(where('name') == detail)
+                data = table.search(where('name') == detail)
                 self.render('modules/main2.html',items=self.items(),new=self.new(),cart=self.cart(),id=ident,number=3,data=data)
                 return
-            data = self.application.db.all()
+            data = table.all()
         self.render('modules/main.html',items=self.items(),new=self.new(),cart=self.cart(),id=ident,number=5,data=data)
          
     def items(self):
@@ -145,12 +146,13 @@ class ItemHandler(tornado.web.RequestHandler):
           
     def post(self):
         self.read()
+        self.index['ident'] = self.application.ident['ident']
         self.index['item_id'] = self.get_argument('id','')
         self.index['name'] = self.get_argument('name','')
         self.index['price'] = self.get_argument('price',0)
         self.index['weight'] = self.get_argument('weight',0)
         self.index['maker'] = self.application.ident['name']
-        self.item.insert(self.index)
+        self.application.db.table('temp').insert(self.index)
         self.render('item.html',item=self.item,data=self.table,index=self.index)
         
     def read(self):
@@ -160,6 +162,20 @@ class ItemHandler(tornado.web.RequestHandler):
                      
 class AdminHandler(tornado.web.RequestHandler):
     def get(self):
+        item,mode = self.any()
+        self.render('admin.html',item=item,mode=mode)
+    
+    def post(self):
+        ident = self.get_argument('id')
+        table = self.application.db.table('temp')
+        el = table.get(where('item_id') == ident)
+        if el:
+            self.application.db.table('item').insert(el)
+            table.remove(eids=[el.eid])
+        item,mode = self.any()            
+        self.render('admin.html',item=item,mode=mode)
+        
+    def any(self):
         mode = self.get_argument('mode','const')
         code = 'checked=check'
         if mode == 'const':
@@ -171,8 +187,8 @@ class AdminHandler(tornado.web.RequestHandler):
         else:
             item = self.application.db.table('item').search(where('active') == False)
             s = ['',code,'']
-        self.render('admin.html',item=item,mode=s)
-    
+        return item,s
+        
 class DecideHandler(tornado.web.RequestHandler):
     def post(self):
         s = self.get_argument('post')
