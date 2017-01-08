@@ -10,7 +10,7 @@
 {% set s = 0 %}
 {% for x in data %}
 <tr><td><img src={{x['url']}}></td><td>{{x['name']}}</td><td>{{x['count']}}</td>
-	<td>{{x['price']*x['count']}}</td><td><a href=/del?id=x['id']>削除</a></td></tr>
+	<td>{{x['price']*x['count']}}</td><td><a href=/del?id={{x['item_id']}}>削除</a></td></tr>
 {% set s += x['price'] %}
 {% end %}
 </table>

@@ -123,10 +123,15 @@ class CartHandler(tornado.web.RequestHandler):
         self.redirect(r'/main')
                 
 class DeleteHandler(tornado.web.RequestHandler):
-    def post(self):
-        ident = self.get_argument('id','')
-        if ident:
-            self.application.db.remove(where('id') == ident)
+    def get(self):
+        ident = int(self.get_argument('id',0))
+        if self.application.ident:
+            user = self.application.ident['ident']
+        else:
+            user = 0
+        table = self.application.db.table('cart')
+        table.remove((where('item_id') == ident)&(where('ident') == user))
+        self.redirect(r'/cart')
               
 class PayHandler(tornado.web.RequestHandler):
     def get(self):
@@ -235,7 +240,7 @@ class Application(tornado.web.Application):
     def __init__(self):
         self.ident = {}
         self.db = TinyDB('static/db/db.json')
-        handlers =[(r'/main',IndexHandler),(r'/login',LoginHandler),(r'/user',UserHandler),
+        handlers =[(r'/main',IndexHandler),(r'/login',LoginHandler),(r'/user',UserHandler),(r'/del',DeleteHandler),
                    (r'/item',ItemHandler),(r'/cart',CartHandler),(r'/payment',PayHandler),(r'/decide',DecideHandler),
                    (r'/admin',AdminHandler),(r'/[a-zA-Z0-9]*',SendHandler)]
         setting = {'template_path':os.path.join(os.path.dirname(__file__),'templates'),
