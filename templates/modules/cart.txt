@@ -2,9 +2,9 @@
 <div class=field>
 	<section>cart</section>
 	{% set sum = 0 %}
-	{% for x in items.keys() %}
-	<p><span style=text-align:left>{{x}}</span><span style=text-align:end><span style=color:blue>{{items[x]}}</span>髯ｷ�ｿｽ�ｿｽ�ｽｿ�ｽｽ</span></p>
-	{% set sum += items[x] %}
+	{% for x in items %}
+	<p><span style=text-align:left>{{x['name']}}</span><span style=text-align:end><span style=color:blue>{{x['price']}}</span>yen</span></p>
+	{% set sum += x['price'] %}
 	{% end %}
 	<p>--------
 	<p>goukei {{sum}}yen

@@ -2,12 +2,13 @@
 
 {% block contents %}
 	<p>welcom {{id}}
-	<div class=prof>
+	<form action=/cart method=post>
 	<img src={{data['url']}}>
-	<p>{{data['name']}} / price{{data['price']}}yen
+	<p><input type=hidden name=id value={{data['item_id']}}>
+		{{data['item_id']}}:{{data['name']}} / price{{data['price']}}yen
 	<p><a href=/main>back to table</a>
 	<p>count</p><input type=text name=count value=1>
 	<p>put in cart
-	<button type=submit>buy</button>
-	</div>
+	<input type=submit value=buy>
+	</form>
 {% end %}
