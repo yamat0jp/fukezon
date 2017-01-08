@@ -25,7 +25,7 @@ class IndexHandler(tornado.web.RequestHandler):
         else:
             detail = self.get_argument('detail','')
             if detail:
-                data = table.get(where('item_id') == detail)
+                data = table.get(where('item_id') == int(detail))
                 self.render('modules/main2.html',items=set(self.items()),new=self.new(),cart=self.cart(),id=ident,number=3,data=data)
                 return
             cate = self.get_argument('category','')
@@ -146,7 +146,7 @@ class ItemHandler(tornado.web.RequestHandler):
             self.index = self.application.db.table('temp').search(q)
         else:
             self.index['maker'] = self.application.ident['name']
-        self.render('item.html',item=self.item,data=self.table,index=self.index)
+        self.render('item.html',item=[],data=self.table,index=self.index)
           
     def post(self):
         self.read()
@@ -160,11 +160,11 @@ class ItemHandler(tornado.web.RequestHandler):
         eid = tb.insert(self.index)
         tb.update({'item_id':eid},eids=[eid])
         #self.application.db.table('temp').insert(self.index)
-        self.render('item.html',item=self.item,data=self.table,index=self.index)
+        self.render('item.html',item=[],data=self.table,index=self.index)
         
     def read(self):
         q = where('ident') == self.application.ident['ident']
-        self.item = self.application.db.table('temp').search(q)
+        #self.item = self.application.db.table('temp').search(q)
         self.table = self.application.db.table('item').search(q)
                      
 class AdminHandler(tornado.web.RequestHandler):

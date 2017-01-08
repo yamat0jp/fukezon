@@ -39,6 +39,11 @@ div.item p {
 	line-height:0
 }
 
+div.item img {
+	width:30;
+	height:30
+}
+
 #mainbox {
 	border:solid 1px gray;
 	width:65%;
@@ -61,4 +66,12 @@ div.item p {
 
 #rightbox {
 	width:20%;
+}
+
+div.prof {
+	column-count:2;
+	border:solid 1px gray;
+	width:65%;
+	margin:10px;
+	display:block
 }

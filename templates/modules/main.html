@@ -21,19 +21,19 @@
 		</form>
 		</div>
 	</div>
-	<div class=box id=mainbox>
 	{% block contents %}
+	<div class=box id=mainbox>
 		<p>いらっしゃいませ{{id}}様
 		<caption>商品一覧</caption>
 		{% for x in data %}
 		<div class=item>
-			<p><img src={{x['url']}}>{{x['item_id']}}:{{x['name']}}
+			<p><img src={{x['url']}}>{{x['item_id']}}:<a href=/main?detail={{x['item_id']}}>{{x['name']}}</a>
 			<p>price {{x['price']}}円
 		</div>
 		{% end %}
 		</table>
-	{% end %}
 	</div>
+	{% end %}
 	<div class=box id=rightbox>
 	{% module mycart(cart) %}
 	{% module mycount(number) %}

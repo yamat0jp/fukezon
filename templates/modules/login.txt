@@ -3,7 +3,7 @@
 <form action=/login method=post>
 	<p><input type=email name=email>
 	<p><input type=password name=password>
-	<p><input type=submit value=郢晢ｽｭ郢ｧ�ｽｰ郢ｧ�ｽ､郢晢ｽｳ>
+	<p><input type=submit value=login>
 </form>
 {% else %}
 <a href=/login>logout</a>

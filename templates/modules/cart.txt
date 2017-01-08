@@ -1,12 +1,12 @@
 
 <div class=field>
-	<section>郢ｧ�ｽｷ郢晢ｽｧ郢晢ｿｽ郢晄鱒ﾎｦ郢ｧ�ｽｰ郢ｧ�ｽｫ郢晢ｽｼ郢晢ｿｽ</section>
+	<section>cart</section>
 	{% set sum = 0 %}
 	{% for x in items.keys() %}
-	<p><span style=text-align:left>{{x}}</span><span style=text-align:end><span style=color:blue>{{items[x]}}</span>陷��ｿｽ</span></p>
+	<p><span style=text-align:left>{{x}}</span><span style=text-align:end><span style=color:blue>{{items[x]}}</span>髯ｷ�ｿｽ�ｿｽ�ｽｿ�ｽｽ</span></p>
 	{% set sum += items[x] %}
 	{% end %}
 	<p>--------
 	<p>goukei {{sum}}yen
-	<p><a href=/cart>カートへ</a>
+	<p><a href=/cart>check cart</a>
 </div>

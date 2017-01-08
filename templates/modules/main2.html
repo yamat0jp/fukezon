@@ -1,13 +1,13 @@
 {% extends 'main.html' %}
 
 {% block contents %}
-	{% if id == '' %}
-	<p>いらっしゃいませログインしてください
-	{% end %}
-	<div>
-	<img src={{data['url']}}>{{data['name']}}{{data['price']}}円<a href=/main>一覧表示に戻る</a>
-	<p>注文数量</p><input type=text value=1>
-	<p>カートに入れる：
-	<button>注文</button>
+	<p>welcom {{id}}
+	<div class=prof>
+	<img src={{data['url']}}>
+	<p>{{data['name']}} / price{{data['price']}}yen
+	<p><a href=/main>back to table</a>
+	<p>count</p><input type=text name=count value=1>
+	<p>put in cart
+	<button type=submit>buy</button>
 	</div>
 {% end %}
