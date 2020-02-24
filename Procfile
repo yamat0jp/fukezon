@@ -1,1 +1,1 @@
-web: gunicorn -k tornado zen:app
+web: python zen.py
