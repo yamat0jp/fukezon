@@ -1,1 +1,1 @@
-web: python zen.py
+web: python zen.py --port=$PORT
